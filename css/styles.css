@@ -1,0 +1,192 @@
+/* Global Styles */
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #4caf50;
+    --background-color: #f5f7fa;
+    --text-primary: #37474f;
+    --text-secondary: #78909c;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.app-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.app-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    margin: 0 auto;
+    width: 80%;
+    max-width: 400px;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex: 1;
+}
+
+/* Metric Section */
+.metric-section {
+    padding: 1rem;
+}
+
+.metric-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: var(--text-primary);
+    padding-left: 0.5rem;
+}
+
+/* Metric Card */
+.metric-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 200px;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+#temperature-card {
+    background: linear-gradient(135deg, #64b5f6, #1976d2);
+}
+
+#humidity-card {
+    background: linear-gradient(135deg, #81c784, #4caf50);
+}
+
+.metric-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metric-icon .material-icons-round {
+    font-size: 3rem;
+    color: var(--white);
+}
+
+.metric-value {
+    text-align: right;
+    color: var(--white);
+}
+
+.metric-value span:first-child {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.metric-unit {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-left: 0.2em;
+    vertical-align: top;
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    margin-top: auto;
+    padding-top: 2rem;
+}
+
+.last-update {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    background-color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.last-update .material-icons-round {
+    font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .metric-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .metric-icon {
+        margin-bottom: 1rem;
+    }
+    
+    .metric-value {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/* Animation for value changes */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.value-updated {
+    animation: pulse 0.5s ease-in-out;
+}

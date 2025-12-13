@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Ambiente</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="js/dto/weather_info_dto.js"></script>
+    <script type="module" src="js/repositories/weather_repository.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Monitor de Ambiente</h1>
+            <div class="divider"></div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Seção de Temperatura -->
+            <section class="metric-section">
+                <h2>Temperatura</h2>
+                <div class="metric-card" id="temperature-card">
+                    <div class="metric-icon">
+                        <span class="material-icons-round">thermostat</span>
+                    </div>
+                    <div class="metric-value">
+                        <span id="temperature-value">--</span>
+                        <span class="metric-unit">°C</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Umidade -->
+            <section class="metric-section">
+                <h2>Umidade</h2>
+                <div class="metric-card" id="humidity-card">
+                    <div class="metric-icon">
+                        <span class="material-icons-round">water_drop</span>
+                    </div>
+                    <div class="metric-value">
+                        <span id="humidity-value">--</span>
+                        <span class="metric-unit">%</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <div class="last-update">
+                <span class="material-icons-round">update</span>
+                <span id="last-update">--:--:--</span>
+                <span id="last-update">Atualizando...</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MQTT.js from CDN -->
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script type="module">
+        import weatherRepository from './js/repositories/weather_repository.js';
+
+        // DOM Elements
+        const temperatureElement = document.getElementById('temperature-value');
+        const humidityElement = document.getElementById('humidity-value');
+        const lastUpdateElement = document.getElementById('last-update');
+
+        // Format time to HH:MM:SS
+        function formatTime(date) {
+            return date.toLocaleTimeString('pt-BR');
+        }
+
+        // Update the UI with weather data
+        function updateWeatherUI(weatherData) {
+            if (weatherData.temperature) {
+                temperatureElement.textContent = weatherData.temperature.toString().replace('°C', '');
+            }
+            if (weatherData.humidity) {
+                humidityElement.textContent = weatherData.humidity.toString().replace('%', '');
+            }
+            lastUpdateElement.textContent = formatTime(new Date());
+        }
+
+        // Initialize MQTT connection and subscribe to updates
+        async function initializeMQTT() {
+            try {
+                // Connect to MQTT broker
+                await weatherRepository.connect();
+                
+                // Subscribe to updates
+                weatherRepository.subscribe((data) => {
+                    updateWeatherUI(data);
+                });
+                
+                console.log('MQTT connection established and listening for updates');
+            } catch (error) {
+                console.error('Error initializing MQTT:', error);
+                // Fallback to showing the last known data
+                const weatherData = await weatherRepository.getCurrentWeather();
+                updateWeatherUI(weatherData);
+            }
+        }
+
+        // Initialize the application
+        initializeMQTT();
+    </script>
+</body>
+</html>
