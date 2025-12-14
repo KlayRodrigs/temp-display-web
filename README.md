@@ -4,6 +4,10 @@
 
 #### É preciso ter o arduino, a protoboars 3 jumpers (cabo) um resistor de 10k ohm e o sensor DHT11 para testar o projeto localmente!
 
+## Contribuidores
+
+### Luiz Guilherme e Klayvert G.
+
 ## 📋 Sobre o Projeto
 
 Este é um painel web que exibe em tempo real os dados de temperatura e umidade recebidos via MQTT. O projeto já está totalmente configurado para uso imediato com um broker MQTT público.
