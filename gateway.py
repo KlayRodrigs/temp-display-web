@@ -22,6 +22,9 @@ while True:
         
         if line.startswith("{") and line.endswith("}"):
             data = json.loads(line)
-            client.publish(TOPIC, line)
-
-        client.publish(TOPIC, line)
+            data_format = {
+                "temperature": f"{data['t']}°C",
+                "humidity": f"{data['h']}%"
+            }
+            payload = json.dumps(data_format)
+            client.publish(TOPIC, payload)

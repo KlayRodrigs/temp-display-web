@@ -1,5 +1,5 @@
 import WeatherInfoDTO from '../dto/weather_info_dto.js';
-import { connect, MqttClient } from 'mqtt';
+import mqtt from 'https://esm.sh/mqtt@5.3.5';
 
 class WeatherRepository {
     constructor() {
@@ -18,19 +18,19 @@ class WeatherRepository {
             reconnectPeriod: 1000,
         };
 
-        this.client = connect('wss://broker.hivemq.com:8884/mqtt', options);
+        this.client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', options);
 
         this.client.on('connect', () => {
             console.log('Connected to MQTT broker');
-            this.client.subscribe('weather/data', (err) => {
+            this.client.subscribe('class/test/temperature', (err) => {
                 if (!err) {
-                    console.log('Subscribed to weather/data topic');
+                    console.log('Subscribed to class/test/temperature topic');
                 }
             });
         });
 
         this.client.on('message', (topic, message) => {
-            if (topic === 'weather/data') {
+            if (topic === 'class/test/temperature') {
                 try {
                     const data = JSON.parse(message.toString());
                     this.currentData = WeatherInfoDTO.fromJSON(data);
