@@ -1,92 +1,67 @@
-# Monitor de Ambiente em Tempo Real
+# Monitor de Temperatura e Umidade em Tempo Real
 
-## Descrição e Justificativa
+## 📋 Sobre o Projeto
 
-Este projeto é um painel de monitoramento em tempo real que exibe dados de temperatura e umidade. Ele foi desenvolvido para fornecer uma visualização clara e em tempo real das condições ambientais, sendo ideal para monitoramento de salas de servidores, estufas ou qualquer ambiente que necessite de monitoramento constante.
+Este é um painel web que exibe em tempo real os dados de temperatura e umidade recebidos via MQTT. O projeto já está totalmente configurado para uso imediato com um broker MQTT público.
 
-A principal justificativa para este projeto é fornecer uma solução leve, responsiva e fácil de configurar para visualização de dados de sensores em tempo real, utilizando tecnologias web modernas.
-
-## 🛠️ Ferramentas
-
-- **Frontend**:
-  - HTML5
-  - CSS3 (com animações)
-  - JavaScript (ES6+)
-  - [MQTT.js](https://github.com/mqttjs/MQTT.js) - Cliente MQTT para JavaScript
-  - [Material Icons](https://fonts.google.com/icons) - Ícones da interface
-  - [Roboto Font](https://fonts.google.com/specimen/Roboto) - Fonte principal
-
-- **Protocolo de Comunicação**:
-  - MQTT (Message Queuing Telemetry Transport) para comunicação em tempo real
-
-## 🌐 API
-
-O projeto utiliza o protocolo MQTT para receber dados em tempo real. O formato esperado das mensagens é:
-
-```json
-{
-  "temperature": "25.5°C",
-  "humidity": "60%"
-}
-```
-
-### Configuração do Broker MQTT
-
-Por padrão, o projeto está configurado para usar o broker público do HiveMQ:
-- URL: `wss://broker.hivemq.com:8884/mqtt`
-- Tópico: `weather/data`
-
-## 🚀 Instalação e Configuração
+## 🚀 Como Executar
 
 ### Pré-requisitos
 
 - Navegador web moderno (Chrome, Firefox, Edge, ou Safari atualizados)
-- Servidor web para hospedar os arquivos (opcional, pode ser aberto diretamente no navegador)
+- Conexão com a internet (para carregar as fontes e ícones)
 
-### Instalação
+### Passo a Passo
 
-1. Clone o repositório:
+1. **Clonar o repositório** (se ainda não tiver feito):
    ```bash
    git clone git@github.com:KlayRodrigs/temp-display-web.git
    cd temp-display-web
    ```
 
-2. Abra o arquivo `index.html` em um navegador web.
+2. **Abrir o painel de monitoramento**
+   - Dê um duplo clique no arquivo `index.html` para abrir no navegador padrão
+   - OU arraste o arquivo `index.html` para uma janela do navegador
 
-### Configuração Personalizada
+3. **Visualizando os dados**
+   - O painel mostrará inicialmente valores simulados
+   - Para testar com dados reais, siga as instruções abaixo
 
-1. **Alterar o Broker MQTT**
-   - Edite o arquivo `js/repositories/weather_repository.js`
-   - Atualize a URL do broker na linha onde está `connect('wss://broker.hivemq.com:8884/mqtt', options)`
+### Testando com Dados Reais (Opcional)
 
-2. **Alterar o Tópico MQTT**
-   - No mesmo arquivo, procure por `this.client.subscribe('weather/data', ...)` e altere para o tópico desejado
+1. Acesse o [MQTT Dashboard](https://www.mqtt-dashboard.com/)
+2. Clique em "WebSocket"
+3. Configure a publicação:
+   - **Tópico**: `weather/data`
+   - **Mensagem**: `{"temperature": "25.5°C", "humidity": "60%"}`
+4. Clique em "Publish"
+5. O painel deve atualizar automaticamente com os novos valores
 
-## 📋 Manual de Uso
+## 🔧 Configuração Técnica
 
-1. **Iniciando o Monitoramento**
-   - Abra o arquivo `index.html` em um navegador web
-   - O sistema tentará se conectar automaticamente ao broker MQTT
+- **Broker MQTT**: `wss://broker.hivemq.com:8884/mqtt` (público)
+- **Tópico**: `weather/data`
+- **Formato da Mensagem**:
+  ```json
+  {
+    "temperature": "25.5°C",
+    "humidity": "60%"
+  }
+  ```
 
-2. **Enviando Dados para o Painel**
-   - Publique mensagens no formato JSON para o tópico configurado (padrão: `weather/data`)
-   - Exemplo de publicação usando MQTT Dashboard:
-     1. Acesse https://www.mqtt-dashboard.com/
-     2. Clique em "WebSocket"
-     3. No campo "Topic", insira: `weather/data`
-     4. No campo de mensagem, insira: `{"temperature": "22.5°C", "humidity": "60%"}`
-     5. Clique em "Publish"
+## 📱 Funcionalidades
 
-3. **Visualização**
-   - Temperatura e umidade são exibidas em cartões separados
-   - A cada atualização, o horário na parte inferior é atualizado
-   - As transições de valores são animadas para melhor visualização
+- Exibição em tempo real de temperatura e umidade
+- Atualização automática a cada 5 segundos
+- Interface responsiva que se adapta a diferentes tamanhos de tela
+- Animações suaves nas transições de valores
+- Exibição da data e hora da última atualização
 
-## 🐛 Solução de Problemas
+## ℹ️ Observações
 
-- **Sem conexão com o broker**: Verifique sua conexão com a internet e se o broker está acessível
-- **Dados não atualizando**: Verifique se o tópico da mensagem publicada corresponde ao tópico de inscrição
-- **Erros no console**: Verifique o console do navegador (F12) para mensagens de erro detalhadas
+- O projeto usa um broker MQTT público para demonstração
+- Os dados são públicos e visíveis para qualquer pessoa conectada ao mesmo tópico
+- Para uso em produção, recomenda-se configurar um broker privado
 
 ## 📝 Licença
 
